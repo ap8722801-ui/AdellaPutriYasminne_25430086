@@ -1,0 +1,103 @@
+# Dokumen Kebutuhan Data - Sistem Informasi Koperasi Mahasiswa (KOPMA)
+**NIM:** [25430086]
+**Tema Proyek:** Koperasi Mahasiswa (KOPMA)
+**Nilai Parameter P:** 6  
+
+---
+
+## 1. Parameter Proyek
+- **Batas Maksimal Jenis Barang per Transaksi:** 8 jenis barang ($P + 2$)
+- **Besaran Diskon Anggota KOPMA:** 6% ($P$)
+- **Target Volume Transaksi Harian:** 70 transaksi ($40 + 5 \times P$)
+
+---
+
+## 2. Deskripsi Proses Bisnis
+1. **Pendaftaran Anggota:** Mahasiswa mendaftarkan diri menjadi anggota KOPMA untuk mendapatkan kartu anggota dan fasilitas diskon.
+2. **Pengadaan & Pengelolaan Barang:** Petugas gudang mengelola data barang jualan, termasuk memperbarui harga dan stok barang yang masuk.
+3. **Transaksi Penjualan:** Kasir melayani transaksi pembelian. Jika pembeli adalah anggota KOPMA, sistem akan memotong total belanja dengan diskon 6%.
+4. **Rekapitulasi Laporan:** Pengurus KOPMA memeriksa laporan pendapatan dan laporan sisa stok barang secara berkala.
+
+---
+
+## 3. Entitas Kandidat
+1. **Anggota:** Menyimpan data mahasiswa yang terdaftar sebagai anggota resmi KOPMA.
+2. **Petugas:** Menyimpan data karyawan/kasir yang melayani transaksi dan mengurus gudang.
+3. **Barang:** Menyimpan daftar produk yang dijual di KOPMA beserta stok dan harganya.
+4. **Penjualan:** Menyimpan data induk transaksi (struk belanja), seperti tanggal, kasir yang melayani, dan total bayar.
+5. **DetailPenjualan:** Menyimpan rincian barang apa saja dan berapa jumlah yang dibeli dalam satu transaksi penjualan.
+
+---
+
+## 4. Aturan Bisnis
+1. Pembeli tidak harus menjadi Anggota KOPMA untuk berbelanja, namun diskon **6%** hanya berlaku jika pembeli menunjukkan ID Anggota.
+2. Setiap transaksi penjualan dilayani oleh tepat 1 Petugas (Kasir).
+3. Dalam satu kali transaksi, pelanggan diperbolehkan membeli maksimal **8 jenis barang** yang berbeda.
+4. Jika stok barang habis (0), maka sistem tidak akan mengizinkan barang tersebut ditambahkan ke keranjang transaksi.
+5. Satu struk Penjualan dapat memiliki banyak DetailPenjualan, namun setiap DetailPenjualan hanya terikat pada 1 Penjualan.
+
+---
+
+## 5. Kebutuhan Informasi
+1. **Struk/Nota Penjualan:** Menampilkan rincian barang yang dibeli, harga satuan, total harga, jumlah diskon anggota, dan nama kasir.
+2. **Laporan Stok Barang Habis:** Menampilkan daftar barang yang stoknya sudah mencapai batas minimum atau nol untuk segera di-*restock*.
+3. **Laporan Penjualan Harian:** Menampilkan total pendapatan harian KOPMA berdasarkan seluruh transaksi yang berhasil.
+4. **Daftar Anggota Aktif:** Menampilkan data seluruh mahasiswa yang terdaftar sebagai anggota KOPMA.
+
+---
+
+## 6. Matriks CRUD (Create, Read, Update, Delete)
+
+| Proses Bisnis | Anggota | Petugas | Barang | Penjualan | DetailPenjualan |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| Pendaftaran Anggota | CRU | R | - | - | - |
+| Pengelolaan Barang | - | R | CRUD | - | - |
+| Transaksi Penjualan | R | R | RU | CR | CR |
+| Laporan & Rekap | R | R | R | R | R |
+
+---
+
+## 7. Kamus Data Awal
+
+### a. Anggota
+- `id_anggota` (VARCHAR(15), Primary Key) - Nomor induk anggota KOPMA
+- `nama_anggota` (VARCHAR(100)) - Nama lengkap anggota
+- `no_hp` (VARCHAR(15)) - Nomor kontak aktif
+
+### b. Petugas
+- `id_petugas` (VARCHAR(10), Primary Key) - Kode unik pegawai KOPMA
+- `nama_petugas` (VARCHAR(100)) - Nama lengkap petugas
+- `posisi` (VARCHAR(30)) - Jabatan (Kasir/Gudang)
+
+### c. Barang
+- `kode_barang` (VARCHAR(10), Primary Key) - Kode unik produk (Barcode)
+- `nama_barang` (VARCHAR(100)) - Nama produk
+- `harga` (DECIMAL(10,2)) - Harga jual barang
+- `stok` (INT) - Jumlah ketersediaan barang
+
+### d. Penjualan
+- `no_nota` (VARCHAR(20), Primary Key) - Nomor unik struk transaksi
+- `tanggal_waktu` (DATETIME) - Waktu transaksi dilakukan
+- `id_petugas` (VARCHAR(10), Foreign Key) - Kasir yang melayani
+- `id_anggota` (VARCHAR(15), Foreign Key, NULL) - ID anggota (kosong jika bukan anggota)
+- `total_bayar` (DECIMAL(12,2)) - Total akhir setelah diskon 6% (jika ada)
+
+### e. DetailPenjualan
+- `id_detail` (VARCHAR(20), Primary Key) - Identifier rincian transaksi
+- `no_nota` (VARCHAR(20), Foreign Key) - Mengacu ke nota utama
+- `kode_barang` (VARCHAR(10), Foreign Key) - Barang yang dibeli
+- `jumlah_beli` (INT) - Kuantitas barang yang dibeli
+
+---
+
+## 8. Batasan dan Asumsi Sistem
+1. **Diskon Dinamis:** Saat ini sistem hanya mengakomodir 1 jenis diskon tetap, yaitu 6% untuk anggota. Promosi atau diskon musiman lainnya belum diterapkan.
+2. **Pembayaran Tunai/Transfer:** Sistem belum terhubung langsung ke mesin kasir otomatis (EDC) atau *Payment Gateway*; konfirmasi pembayaran masih diinput manual oleh kasir.
+
+---
+
+## 9. Glosarium Istilah
+1. **Anggota:** Mahasiswa yang telah membayar simpanan pokok dan bergabung secara resmi dalam koperasi.
+2. **KOPMA:** Koperasi Mahasiswa, unit usaha di kampus yang melayani kebutuhan mahasiswa.
+3. **Restock:** Proses penambahan persediaan barang di gudang KOPMA karena stok menipis.
+4. **Nota:** Bukti fisik/digital dari transaksi penjualan.

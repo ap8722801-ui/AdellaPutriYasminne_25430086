@@ -1,49 +1,9 @@
-erDiagram
-    dosen {
-        string PK_id_dosen "PK | id_dosen | SMALLINT | AI"
-        string col2 "   | nip_dosen | CHAR(15) | UNIQUE"
-        string col3 "   | nama_dosen | VARCHAR(100) | NOT NULL"
-        string col4 "   | no_hp_dosen | VARCHAR(15) | NULL"
-    }
+<mxfile host="app.diagrams.net" modified="2026-10-12T00:00:00.000Z" agent="Mozilla/5.0" version="21.0.0" etag="erd-akademik-sempurna" type="device">
+  <diagram name="ERD Fisik Akademik" id="erd_fisik_akademik_sempurna">
+    <mxGraphModel dx="1400" dy="1100" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="950" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
 
-    matakuliah {
-        string PK_id_mk "PK | id_mk | INT | AI"
-        string col2 "   | kode_mk | VARCHAR(10) | UNIQUE"
-        string col3 "   | nama_mk | VARCHAR(100) | NOT NULL"
-        string col4 "   | sks | TINYINT | NOT NULL"
-    }
-
-    mahasiswa {
-        string PK_id_mhs "PK | id_mahasiswa | INT | AI"
-        string col2 "   | nim | VARCHAR(15) | UNIQUE"
-        string col3 "   | nama_mahasiswa | VARCHAR(100) | NOT NULL"
-        string FK_id_dosen "FK | id_dosen | SMALLINT | → dosen"
-        string col5 "   | email | VARCHAR(100) | NULL"
-    }
-
-    krs {
-        string PK_id_krs "PK | id_krs | INT | AI"
-        string col2 "   | semester | VARCHAR(10) | NOT NULL"
-        string FK_id_mhs "FK | id_mahasiswa | INT | → mahasiswa"
-        string col4 "   | status_approval | VARCHAR(20) | Pending"
-    }
-
-    detail_krs {
-        string PKFK_id_krs "PK, FK | id_krs | INT | → krs"
-        string PKFK_id_mk "PK, FK | id_mk | INT | → matakuliah"
-    }
-
-    pembayaran {
-        string PK_id_bayar "PK | id_pembayaran | INT | AI"
-        string col2 "   | no_kuitansi | VARCHAR(20) | UNIQUE"
-        string FK_id_mhs "FK | id_mahasiswa | INT | → mahasiswa"
-        string col4 "   | nominal_spp | DECIMAL(10,2) | NOT NULL"
-        string col5 "   | denda | DECIMAL(10,2) | DEFAULT 0"
-        string col6 "   | tanggal_bayar | DATE | NOT NULL"
-    }
-
-    dosen ||--o{ mahasiswa : "membimbing"
-    mahasiswa ||--o{ krs : "mengajukan"
-    mahasiswa ||--o{ pembayaran : "melakukan"
-    krs ||--o{ detail_krs : "memuat"
-    matakuliah ||--o{ detail_krs : "tercantum_di"
+        <!-- 1. TABEL: dosen (Biru) -->
+        <mxCell id="t_dosen" value="dosen&lt;hr&gt;&lt;table width=&quot;100%&quot; border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;&lt;tr&gt;&lt;td bgcolor=&quot;#f0f0f0&quot; width=&quot;30&quot;&gt;&lt;b&gt;PK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;id_dosen&lt;/b&gt;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;SMALLINT&lt;/td&gt;&lt;td align=&quot;right&quot; width=&quot;30&quot;&gt;AI&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;nip_dosen&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;CHAR(15)&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;UNIQUE&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;nama_dosen&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;VARCHAR(100)&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;NOT NULL&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;no_hp_dosen&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;VARCHAR(15)&lt;/td&gt;&

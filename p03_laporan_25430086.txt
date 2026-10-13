@@ -1,0 +1,119 @@
+# Laporan Praktikum Basis Data
+**Nama:** Adella Putri Yasmine
+**NIM:** 25430086
+**Kelas:** C
+**Tanggal:** 13 Oktober 2026 
+**Dosen Pengampu:** Dedi Irawan, S.Kom., M.T.I.  
+
+---
+
+## 1. Tujuan Praktikum
+1. Mengidentifikasi entitas, atribut, dan kunci dari dokumen kebutuhan data proyek.
+2. Menentukan relasi beserta kardinalitas dan partisipasinya berdasarkan aturan bisnis.
+3. Memecah relasi banyak-ke-banyak menjadi entitas asosiatif.
+4. Menggambar ERD notasi *Crow's Foot* dan memvalidasinya terhadap Kebutuhan Informasi (KI).
+
+## 2. Ringkasan Dasar Teori
+Model *Entity-Relationship* (ER) menggambarkan struktur data sebagai entitas (objek yang dicatat), atribut (karakteristik entitas), dan relasi (hubungan antarentitas). ERD merupakan hasil dari tahap desain konseptual dalam siklus perancangan basis data. 
+* **Kardinalitas dan Partisipasi:** Menjelaskan batasan jumlah instansiasi hubungan antarentitas (seperti *1-to-1*, *1-to-Many*, atau *Many-to-Many*) serta sifat keikutsertaannya (*mandatory* atau *optional*).
+* **Entitas Asosiatif:** Digunakan untuk menguraikan relasi *Many-to-Many* yang memiliki atribut tambahan tersendiri (contohnya tabel `detail_krs` yang memuat penggabungan antara kartu rencana studi dan mata kuliah).
+
+## 3. Hasil Langkah Percobaan
+* Berdasarkan studi kasus **Koperasi Mahasiswa Sejahtera (Kopma)** pada modul, telah diidentifikasi dan dipetakan seluruh entitas utama (seperti `petugas`, `anggota`, `barang`, `pemasok`, `penjualan`, dan `pembelian`) beserta atribut kunci dan relasinya.
+* Validasi jalur relasi telah diuji terhadap daftar Kebutuhan Informasi (KI) sehingga dipastikan seluruh laporan seperti omzet, barang terlaris, dan stok minimum dapat terjawab melalui struktur ERD tersebut.
+
+## 4. Jawaban Titik Analisis
+1. **Titik Analisis 1 (Pemilihan Kunci Primer):** Penggunaan `id_mahasiswa` dan `id_dosen` sebagai *surrogate key* (kunci pengganti) dipilih alih-alih menjadikan `nim` atau `nip_dosen` sebagai kunci utama guna menghindari risiko perubahan nilai atribut alami di masa mendatang serta menjaga stabilitas integritas referensial.
+2. **Titik Analisis 2 (Kardinalitas Relasi KRS):** Sisi `krs` ke `detail_krs` bernilai satu atau banyak (`1..N`) karena aturan bisnis mewajibkan setiap pengajuan KRS minimal mencatat satu baris mata kuliah yang diambil oleh mahasiswa.
+3. **Titik Analisis 3 (Penelusuran Kebutuhan Informasi):** Penelusuran jalur ERD pada proyek akademik memastikan bahwa informasi terkait dosen pembimbing, data mahasiswa, rencana studi (KRS), mata kuliah yang diambil, hingga histori pembayaran SPP/denda telah terakomodasi secara utuh melalui relasi antartabel.
+
+## 5. Hasil Latihan dan Modifikasi
+* Mengonversi rancangan konseptual ERD studi kasus Kopma serta menyusun pemetaan entitas proyek pribadi (Tema Akademik / `akad`) ke dalam bentuk diagram ER.
+
+## 6. Tugas Mandiri: Milestone Proyek 3
+Berikut adalah rancangan ERD untuk proyek mandiri dengan tema **Akademik** (Rentang NIM 75–99):
+
+### A. Daftar Entitas, Atribut, dan Kunci Proyek
+1. **DOSEN**
+   * `id_dosen` (PK, smallint, AI)
+   * `nip_dosen` (string, Unique)
+   * `nama_dosen` (string)
+   * `no_hp_dosen` (string)
+2. **MAHASISWA**
+   * `id_mahasiswa` (PK, int, AI)
+   * `nim` (string, Unique)
+   * `nama_mahasiswa` (string)
+   * `id_dosen` (FK, smallint)
+   * `email` (string)
+3. **MATAKULIAH**
+   * `id_mk` (PK, int, AI)
+   * `kode_mk` (string, Unique)
+   * `nama_mk` (string)
+   * `sks` (tinyint)
+4. **KRS** (Kartu Rencana Studi)
+   * `id_krs` (PK, int, AI)
+   * `semester` (string)
+   * `id_mahasiswa` (FK, int)
+   * `status_approval` (string)
+5. **DETAIL_KRS** (Entitas Asosiatif)
+   * `id_krs` (PK, FK, int)
+   * `id_mk` (PK, FK, int)
+6. **PEMBAYARAN** (Satu Mahasiswa Banyak Transaksi)
+   * `id_pembayaran` (PK, int, AI)
+   * `no_kuitansi` (string, Unique)
+   * `id_mahasiswa` (FK, int)
+   * `nominal_spp` (decimal)
+   * `denda` (decimal)
+   * `tanggal_bayar` (date)
+
+### B. Visualisasi ERD Proyek (Mermaid Notation)
+```mermaid
+erDiagram
+    DOSEN {
+        smallint id_dosen PK
+        string nip_dosen
+        string nama_dosen
+        string no_hp_dosen
+    }
+
+    MAHASISWA {
+        int id_mahasiswa PK
+        string nim
+        string nama_mahasiswa
+        smallint id_dosen FK
+        string email
+    }
+
+    MATAKULIAH {
+        int id_mk PK
+        string kode_mk
+        string nama_mk
+        tinyint sks
+    }
+
+    KRS {
+        int id_krs PK
+        string semester
+        int id_mahasiswa FK
+        string status_approval
+    }
+
+    DETAIL_KRS {
+        int id_krs PK, FK
+        int id_mk PK, FK
+    }
+
+    PEMBAYARAN {
+        int id_pembayaran PK
+        string no_kuitansi
+        int id_mahasiswa FK
+        decimal nominal_spp
+        decimal denda
+        date tanggal_bayar
+    }
+
+    DOSEN ||--o{ MAHASISWA : "membimbing"
+    MAHASISWA ||--o{ KRS : "mengajukan"
+    KRS ||--|{ DETAIL_KRS : "memuat"
+    MATAKULIAH ||--o{ DETAIL_KRS : "tercantum_di"
+    MAHASISWA ||--o{ PEMBAYARAN : "melakukan"

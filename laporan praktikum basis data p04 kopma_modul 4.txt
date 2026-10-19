@@ -1,0 +1,58 @@
+# Laporan Praktikum Basis Data - Pertemuan 4 (Studi Kasus Kopma)
+
+**Nama:** Adella Putri Yasminne  
+**NIM:** 25430086  
+**Kelas:** [Isi Kelas Anda]  
+**Tanggal:** 19 Oktober 2026  
+
+---
+
+## 1. Tujuan Praktikum
+Mahasiswa mampu mengidentifikasi anomali data pada sistem pencatatan transaksi Koperasi Mahasiswa (Kopma), menurunkan dependensi fungsional berdasarkan aturan bisnis penjualan barang, melakukan proses normalisasi data dari bentuk UNF hingga 3NF/BCNF, serta mengambil keputusan terkait penyimpanan nilai turunan (`derived attribute`).
+
+## 2. Ringkasan Dasar Teori
+Normalisasi adalah teknik perancangan basis data relasional untuk mengelompokkan atribut-atribut data ke dalam relasi/tabel yang terstruktur agar terhindar dari redundansi dan anomali data (anomali sisip, hapus, dan ubah).
+* **UNF (Unnormalized Form):** Bentuk data mentah yang masih mengandung grup berulang (`repeating group`).
+* **1NF (First Normal Form):** Setiap sel bernilai atomik dan grup berulang dipisahkan.
+* **2NF (Second Normal Form):** Bebas dari ketergantungan parsial (`partial dependency`) terhadap kunci komposit.
+* **3NF (Third Normal Form):** Bebas dari ketergantungan transitif (`transitive dependency`) antar atribut sanak kunci.
+* **BCNF (Boyce-Codd Normal Form):** Setiap determinan pada dependensi fungsional merupakan kunci kandidat (`candidate key`).
+
+## 3. Hasil Langkah Percobaan
+Melakukan analisis anomali pada lembar kerja/spreadsheet pencatatan nota transaksi lama Kopma, menentukan dependensi fungsional antar entitas Kasir, Anggota, Barang, dan Transaksi, serta membentuk skema tabel relasional kanonik yang bebas anomali.
+
+## 4. Jawaban Titik Analisis (Studi Kasus Kopma)
+* **Titik Analisis 1 (Detail Transaksi & Harga Historis):**
+  * *Pertanyaan:* Mengapa kuantitas (`jumlah_beli`) dan harga saat transaksi disimpan pada tabel detail transaksi?
+  * *Jawaban:* Kuantitas disimpan pada tabel detail karena bernilai unik untuk setiap barang yang dibeli dalam satu transaksi tertentu. Selain itu, menyimpan snapshot harga satuan pada saat transaksi dilakukan bertujuan menjaga konsistensi rekam jejak historis keuangan jika terjadi perubahan harga master barang di kemudian hari.
+* **Titik Analisis 2 (Penanganan Atribut Turunan/Total Bayar):**
+  * *Pertanyaan:* Bagaimana penanganan atribut `total_transaksi` atau `total_bayar` pada skema basis data operasional Kopma?
+  * *Jawaban:* `total_transaksi` merupakan nilai turunan (`derived attribute`) yang dihitung dari `SUM(harga_satuan * jumlah_beli)`. Nilai ini **tidak disimpan** di dalam tabel operasional harian untuk mencegah anomali pembaruan dan redundansi data, melainkan dihitung secara dinamis saat pembuatan cetak nota/struk.
+* **Titik Analisis 3 (Pemisahan Entitas Master):**
+  * *Pertanyaan:* Mengapa data Kasir dan Anggota dipisahkan dari tabel Transaksi Utama?
+  * *Jawaban:* Pemisahan data Kasir (`id_kasir -> nama_kasir`) dan Anggota (`id_anggota -> nama_anggota, diskon_anggota`) menghilangkan ketergantungan transitif. Hal ini mencegah pengulangan penulisan nama kasir/anggota secara berulang pada setiap nota transaksi yang rentan menimbulkan kesalahan eja dan anomali pembaruan data.
+
+## 5. Hasil Latihan dan Modifikasi
+Menyusun skema relasional 3NF/BCNF untuk Kopma yang menghasilkan 5 tabel utama: `KASIR`, `ANGGOTA`, `BARANG`, `TRANSAKSI`, dan `DETAIL_TRANSAKSI`.
+
+## 6. Tugas Mandiri / Latihan Proyek
+* Berkas skema normalisasi Kopma (`p04_normalisasi_kopma.md` / `p02_kebutuhan_data_kopma_86.md`) telah disusun secara runtut mulai dari tahap UNF, 1NF, 2NF, 3NF, hingga evaluasi BCNF.
+
+## 7. Pembahasan dan Kendala
+Proses penentuan dependensi fungsional pada relasi barang dan detail transaksi memerlukan kecermatan agar pemisahan kunci komposit `(id_transaksi, kode_barang)` tepat dan tidak merusak keutuhan referensi relasional (*referential integrity*).
+
+## 8. Kesimpulan
+Dengan menerapkan normalisasi hingga 3NF/BCNF pada studi kasus Kopma, basis data transaksi menjadi terstruktur rapi, terhindar dari redundansi data kasir/anggota/barang, serta menjamin integritas data keuangan koperasi.
+
+## 9. Pernyataan Penggunaan AI
+Menggunakan bantuan AI sebagai sarana diskusi untuk memvalidasi alur pembentukan dependensi fungsional dan pemisahan atribut turunan pada studi kasus Kopma.
+
+## 10. Bukti Git
+* **Tautan Repositori:** https://github.com/ap8722801-ui/AdellaPutriYasminne_25430086.git  
+* **Branch:** `main`
+
+## Checklist
+- [x] Dokumen normalisasi Kopma tersusun runtut (UNF, 1NF, 2NF, 3NF, BCNF)
+- [x] Jawaban titik analisis transaksi & barang telah terisi
+- [x] Keputusan atribut turunan (`total_transaksi`) dijelaskan dengan rasionalitas yang tepat
+- [x] Perubahan terunggah ke repositori GitHub

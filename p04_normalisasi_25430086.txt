@@ -1,0 +1,66 @@
+# Dokumen Normalisasi dan Skema Relasional - Proyek Akademik
+
+Nama: Adella Putri Yasminne
+NIM: 25430086
+Tema Proyek: Akademik (`akad_086`)
+
+---
+
+## 1. Titik Awal UNF (Unnormalized Form)
+
+Berdasarkan dokumen sumber **Kartu Rencana Studi (KRS) & Kartu Hasil Studi (KHS)**, bentuk data mentah sebelum dinormalisasi adalah sebagai berikut:
+
+KRS_UNF (nim_mahasiswa, nama_mahasiswa, prodi_mahasiswa, semester_mhs, 
+         { kode_mk, nama_mk, sks_mk, kelas_mk, kode_dosen, nama_dosen, nilai_huruf, nilai_angka }, 
+         total_sks)
+## 2. Tahapan Normalisasi
+A. 1NF (First Normal Form)
+Menghilangkan repeating group (grup berulang) sehingga setiap sel bersifat atomik. Kunci primernya menjadi kunci komposit (nim_mahasiswa, kode_mk):
+
+KRS_1NF (nim_mahasiswa, kode_mk, nama_mahasiswa, prodi_mahasiswa, semester_mhs,
+         nama_mk, sks_mk, kelas_mk, kode_dosen, nama_dosen, nilai_huruf, nilai_angka, total_sks)
+B. 2NF (Second Normal Form)
+Memisahkan ketergantungan parsial (partial dependency) pada kunci komposit (nim_mahasiswa, kode_mk):
+
+MAHASISWA: (nim_mahasiswa, nama_mahasiswa, prodi_mahasiswa, semester_mhs)
+
+MATA_KULIAH: (kode_mk, nama_mk, sks_mk)
+
+KRS_DETAIL: (nim_mahasiswa*, kode_mk*, kelas_mk, kode_dosen, nama_dosen, nilai_huruf, nilai_angka)
+
+C. 3NF (Third Normal Form)
+Memisahkan ketergantungan transitif (transitive dependency) di mana atribut bukan kunci menentukan atribut bukan kunci lain:
+
+MAHASISWA: (nim_mahasiswa, nama_mahasiswa, prodi_mahasiswa, semester_mhs)
+
+MATA_KULIAH: (kode_mk, nama_mk, sks_mk)
+
+DOSEN: (kode_dosen, nama_dosen)
+
+KRS_DETAIL: (nim_mahasiswa*, kode_mk*, kode_dosen*, kelas_mk, nilai_huruf, nilai_angka)
+
+(Garis bawah = Primary Key, * = Foreign Key)
+
+## 3. Dependensi Fungsional (FD)
+Dependensi Fungsional diturunkan dari Aturan Bisnis (AB-xx) sistem Akademik:
+
+FD1 (Mahasiswa): nim_mahasiswa -> nama_mahasiswa, prodi_mahasiswa, semester_mhs (AB-01: NIM bersifat unik untuk tiap mahasiswa)
+
+FD2 (Mata Kuliah): kode_mk -> nama_mk, sks_mk (AB-02: Setiap mata kuliah memiliki kode unik, nama, dan SKS tetap)
+
+FD3 (Dosen): kode_dosen -> nama_dosen (AB-03: Setiap dosen diidentifikasi oleh kode dosen)
+
+FD4 (KRS & Nilai): (nim_mahasiswa, kode_mk) -> kelas_mk, kode_dosen, nilai_huruf, nilai_angka (AB-04: Pengambilan mata kuliah oleh mahasiswa menentukan kelas, dosen pengampu, dan nilai)
+
+## 4. Pemeriksaan BCNF (Boyce-Codd Normal Form)
+Pada seluruh tabel hasil 3NF, setiap penentu (determinan) pada dependensi fungsional merupakan kunci kandidat (candidate key). Oleh karena itu, skema relasional ini sudah memenuhi syarat BCNF.
+
+## 5. Keputusan Nilai Turunan
+total_sks & IPK (Nilai Turunan):
+
+Keputusan: TIDAK DISIMPAN di tabel operasional.
+
+Alasan: Total SKS dan IPK dapat dihitung secara dinamis (on-the-fly) menggunakan fungsi agregat SQL (SUM(sks_mk), AVG()) saat pembuatan laporan Kartu Hasil Studi (KHS). Hal ini mencegah terjadinya anomali pembaruan dan menjamin konsistensi data.
+
+## 6. Catatan Pembaruan ERD Proyek
+Hasil normalisasi memisahkan entitas Dosen dari detail KRS, sehingga pada ERD proyek ditambahkan entitas dosen yang berelasi satu-ke-banyak (1..N) dengan pengambilan mata kuliah / KRS.

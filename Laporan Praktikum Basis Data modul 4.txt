@@ -1,0 +1,44 @@
+# Laporan Praktikum Basis Data - Pertemuan 4
+
+**Nama:** Adella Putri Yasminne  
+**NIM:** 25430086  
+**Kelas:** c 
+**Tanggal:** 19 Oktober 2026  
+
+## 1. Tujuan Praktikum
+Mahasiswa mampu mengidentifikasi anomali basis data, menurunkan dependensi fungsional dari aturan bisnis, melakukan normalisasi relasi hingga bentuk normal ketiga (3NF), memeriksa BCNF, serta memutuskan penyimpanan nilai turunan[cite: 34].
+
+## 2. Ringkasan Dasar Teori
+Normalisasi adalah proses pengorganisasian data untuk menghindari redundansi data dan anomali (ubah, sisip, hapus)[cite: 34, 35]. Tahapan normalisasi dimulai dari UNF (grup berulang), 1NF (nilai atomik), 2NF (bebas ketergantungan parsial), hingga 3NF (bebas ketergantungan transitif)[cite: 35]. Atribut turunan seperti total SKS atau IPK dihitung secara dinamis untuk menjaga konsistensi data[cite: 35, 37].
+
+## 3. Hasil Langkah Percobaan
+Telah mempelajari anomali pada spreadsheet lama Kopma, menentukan dependensi fungsional, serta merancang skema kanonik yang bebas anomali[cite: 34, 37].
+
+## 4. Jawaban Titik Analisis
+* **Titik Analisis 1:** Nilai huruf dan angka disimpan pada kunci komposit detail KRS agar perubahan data mata kuliah di masa depan tidak mengubah rekam jejak nilai historis semester lalu[cite: 63, 64].
+* **Titik Analisis 2:** Data operasional harian menghindari penyimpanan total SKS/IPK agar tidak terjadi anomali pembaruan, sedangkan potret historis arsip KHS dapat menyimpan total sebagai rekam audit permanen[cite: 64].
+* **Titik Analisis 3:** Informasi Dosen disimpan menggunakan kunci tamu (`foreign key`) yang merujuk ke tabel master `dosen`, sehingga terhindar dari pengulangan penulisan nama dosen yang rentan salah eja[cite: 65].
+
+## 5. Hasil Latihan dan Modifikasi
+Melakukan analisis dependensi fungsional dan pemisahan tabel untuk menangani relasi dosen pengampu pada proyek akademik[cite: 38, 40].
+
+## 6. Tugas Mandiri: Milestone Proyek 4
+* Berkas skema normalisasi proyek akademik (`p04_normalisasi_25430086.md`) telah selesai disusun mulai dari UNF hingga 3NF dan BCNF[cite: 26, 65].
+
+## 7. Pembahasan dan Kendala
+Tidak ada kendala dalam menentukan kunci primer dan memisahkan atribut transitif pada proyek tema Akademik.
+
+## 8. Kesimpulan
+Normalisasi memastikan struktur basis data proyek akademik terhindar dari anomali data serta memenuhi prinsip desain relasional yang baik.
+
+## 9. Pernyataan Penggunaan AI
+Menggunakan bantuan AI untuk menyusun kerangka penulisan dan penjelasan konsep normalisasi[cite: 16].
+
+## 10. Bukti Git
+Tautan Repositori: [Isi Tautan Repository GitHub Anda]  
+Hash Commit: [Isi Hash Commit]  
+
+## Checklist
+- [x] Berkas normalisasi ada di repositori[cite: 26, 66]
+- [x] Tahapan UNF, 1NF, 2NF, 3NF terdokumentasi[cite: 26, 66]
+- [x] Keputusan nilai turunan dan alasan tercantum[cite: 26, 66]

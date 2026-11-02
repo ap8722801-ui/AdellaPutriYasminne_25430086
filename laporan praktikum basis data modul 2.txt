@@ -1,0 +1,52 @@
+================================================================================
+NAMA       : Adella Putri Yasminne
+NPM        : 25430086
+KELAS      : C
+MATA KULIAH: Basis Data
+================================================================================
+
+                         LAPORAN PRAKTIKUM BASIS DATA
+                                   MODUL 2
+              Manipulasi Data Dasar Menggunakan DML (Data Manipulation Language)
+
+I. TUJUAN PRAKTIKUM
+   1. Mahasiswa memahami fungsi dan kegunaan Data Manipulation Language (DML).
+   2. Mahasiswa mampu melakukan proses penyisipan data baru (INSERT).
+   3. Mahasiswa mampu menampilkan kembali data dari tabel (SELECT).
+   4. Mahasiswa mampu melakukan pembaruan data (UPDATE) dan penghapusan data (DELETE).
+
+II. DASAR TEORI
+    Data Manipulation Language (DML) merupakan sub-bahasa SQL yang digunakan untuk 
+    memanipulasi data yang ada di dalam tabel basis data yang telah dibuat sebelumnya 
+    oleh DDL. Operasi dasar DML sering dikenal dengan istilah CRUD (Create, Read, Update, Delete).
+
+III. LANGKAH KERJA & IMPLEMENTASI SQL
+    A. Menyisipkan Data ke Dalam Tabel (INSERT):
+       INSERT INTO mahasiswa (nim, nama_lengkap, program_studi, angkatan, alamat) 
+       VALUES ('25430086', 'Adella Putri Yasminne', 'Ilmu Komputer', 2025, 'Metro');
+
+       INSERT INTO mahasiswa (nim, nama_lengkap, program_studi, angkatan, alamat) 
+       VALUES ('25430001', 'Budi Santoso', 'Ilmu Komputer', 2025, 'Bandar Lampung');
+
+    B. Menampilkan Seluruh Data (SELECT):
+       SELECT * FROM mahasiswa;
+
+    C. Menampilkan Kolom Tertentu dengan Filter Kondisi (WHERE):
+       SELECT nama_lengkap, program_studi FROM mahasiswa WHERE angkatan = 2025;
+
+    D. Mengubah/Memperbarui Data (UPDATE):
+       UPDATE mahasiswa 
+       SET alamat = 'Jl. Ki Hajar Dewantara No. 15' 
+       WHERE nim = '25430086';
+
+    E. Menghapus Baris Data Tertentu (DELETE):
+       DELETE FROM mahasiswa WHERE nim = '25430001';
+
+IV. ANALISIS & PEMBAHASAN
+    Eksekusi perintah DML memerlukan kehati-hatian yang tinggi, terutama pada klausa WHERE 
+    saat melakukan UPDATE dan DELETE. Jika klausa WHERE tidak disertakan, seluruh baris 
+    di dalam tabel akan ikut berubah atau terhapus secara permanen.
+
+V. KESIMPULAN
+    DML memungkinkan pengelolaan isi data secara dinamis. Kombinasi perintah SELECT dan 
+    kondisi WHERE menjadi landasan utama dalam penarikan informasi spesifik dari dalam database.

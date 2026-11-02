@@ -1,0 +1,50 @@
+================================================================================
+NAMA       : Adella Putri Yasminne
+NPM        : 25430086
+KELAS      : C
+MATA KULIAH: Basis Data
+================================================================================
+
+                         LAPORAN PRAKTIKUM BASIS DATA
+                      STUDI KASUS KOPMA (KOPERASI MAHASISWA)
+                                   MODUL 4
+              Penggabungan Tabel Kompleks Menggunakan SQL JOIN
+
+I. TUJUAN PRAKTIKUM
+   1. Mahasiswa memahami konsep penggabungan tabel (JOIN) dalam basis data relasional.
+   2. Mahasiswa mampu menggunakan INNER JOIN, LEFT JOIN, dan RIGHT JOIN untuk menarik data dari tabel relasional Kopma.
+   3. Mahasiswa mampu menyajikan laporan transaksi lengkap dengan nama anggota dan nama barang.
+
+II. DASAR TEORI
+    Dalam skema basis data dinamis, data sering kali dipecah ke dalam beberapa tabel terpisah 
+    (normalisasi). Untuk menampilkan kembali informasi yang saling terhubung tersebut secara utuh, 
+    dibutuhkan klausa JOIN agar baris dari tabel-tabel berbeda dapat disandingkan berdasarkan kunci relasi yang cocok.
+
+III. LANGKAH KERJA & IMPLEMENTASI SQL
+    A. Penggunaan INNER JOIN untuk Menampilkan Detail Transaksi Kopma:
+       SELECT t.id_transaksi, a.nama_anggota, b.nama_barang, t.jumlah_beli, t.tanggal_transaksi
+       FROM transaksi_kopma t
+       INNER JOIN anggota_kopma a ON t.id_anggota = a.id_anggota
+       INNER JOIN barang_kopma b ON t.kode_barang = b.kode_barang;
+
+    B. Penggunaan LEFT JOIN untuk Menampilkan Seluruh Anggota Beserta Riwayat Transaksinya:
+       SELECT a.nama_anggota, t.id_transaksi, t.jumlah_beli
+       FROM anggota_kopma a
+       LEFT JOIN transaksi_kopma t ON a.id_anggota = t.id_anggota;
+
+    C. Menghitung Total Nominal Belanja per Anggota:
+       SELECT a.nama_anggota, SUM(t.jumlah_beli * b.harga_satuan) AS total_belanja
+       FROM transaksi_kopma t
+       JOIN anggota_kopma a ON t.id_anggota = a.id_anggota
+       JOIN barang_kopma b ON t.kode_barang = b.kode_barang
+       GROUP BY a.nama_anggota;
+
+IV. ANALISIS & PEMBAHASAN
+    Melalui perintah JOIN, keterkaitan antar tabel di dalam sistem database Kopma dapat 
+    dieksplorasi secara optimal. INNER JOIN hanya menampilkan data yang memiliki kecocokan di 
+    kedua belah pihak, sementara LEFT JOIN memastikan data utama (seperti data anggota) tetap 
+    tampil meskipun anggota tersebut belum pernah melakukan transaksi.
+
+V. KESIMPULAN
+    Penguasaan teknik JOIN dan agregasi gabungan merupakan kompetensi inti dalam manajemen 
+    basis data relasional untuk menyusun laporan analitik yang komprehensif.

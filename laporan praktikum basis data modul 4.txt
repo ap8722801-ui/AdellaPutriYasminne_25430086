@@ -1,0 +1,50 @@
+================================================================================
+NAMA       : Adella Putri Yasminne
+NPM        : 25430086
+KELAS      : C
+MATA KULIAH: Basis Data
+================================================================================
+
+                         LAPORAN PRAKTIKUM BASIS DATA
+                                   MODUL 4
+                 Fungsi Agregasi, Group By, dan Having Clause
+
+I. TUJUAN PRAKTIKUM
+   1. Mahasiswa memahami penggunaan fungsi-fungsi agregasi dalam SQL (COUNT, SUM, AVG, MAX, MIN).
+   2. Mahasiswa mampu mengelompokkan baris data menggunakan klausa GROUP BY.
+   3. Mahasiswa mampu menyaring hasil pengelompokan data menggunakan klausa HAVING.
+
+II. DASAR TEORI
+    Fungsi agregasi adalah fungsi yang melakukan perhitungan matematis atau statistik 
+    terhadap sekelompok nilai dan mengembalikan satu nilai tunggal. Ketika dikombinasikan 
+    dengan GROUP BY, kita dapat mengelompokkan data berdasarkan kategori kolom tertentu 
+    sebelum fungsi agregasi diterapkan. Klausa HAVING bertindak sebagai filter khusus untuk 
+    hasil agregasi tersebut (berbeda dengan WHERE yang memfilter data mentah).
+
+III. LANGKAH KERJA & IMPLEMENTASI SQL
+    A. Menghitung Total Keseluruhan Baris Data:
+       SELECT COUNT(*) AS total_mahasiswa FROM mahasiswa;
+
+    B. Menggunakan Fungsi Agregasi Nilai Rata-rata dan Maksimum:
+       SELECT AVG(nilai_ujian) AS rata_rata_nilai, MAX(nilai_ujian) AS nilai_tertinggi 
+       FROM nilai_mahasiswa;
+
+    C. Pengelompokan Data Menggunakan GROUP BY:
+       SELECT program_studi, COUNT(*) AS jumlah_mahasiswa 
+       FROM mahasiswa 
+       GROUP BY program_studi;
+
+    D. Penggunaan Klausa HAVING untuk Filter Hasil Agregat:
+       SELECT program_studi, COUNT(*) AS jumlah_mahasiswa 
+       FROM mahasiswa 
+       GROUP BY program_studi 
+       HAVING COUNT(*) > 5;
+
+IV. ANALISIS & PEMBAHASAN
+    Fungsi agregasi sangat esensial untuk kebutuhan pembuatan laporan rekapitulasi data. 
+    Perbedaan mendasar antara WHERE dan HAVING perlu dipahami dengan baik, di mana WHERE 
+    menyeleksi baris sebelum proses grouping, sedangkan HAVING menyaring kelompok data setelah proses agregasi.
+
+V. KESIMPULAN
+    Penggunaan GROUP BY dan fungsi agregasi mempermudah pengolahan data berskala besar 
+    untuk disajikan dalam bentuk ringkasan informasi yang bermakna bagi pengambil keputusan.

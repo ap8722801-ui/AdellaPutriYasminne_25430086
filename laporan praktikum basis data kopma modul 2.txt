@@ -1,0 +1,62 @@
+================================================================================
+NAMA       : Adella Putri Yasminne
+NPM        : 25430086
+KELAS      : C
+MATA KULIAH: Basis Data
+================================================================================
+
+                         LAPORAN PRAKTIKUM BASIS DATA
+                      STUDI KASUS KOPMA (KOPERASI MAHASISWA)
+                                   MODUL 2
+                Perancangan Tabel Transaksi & Manipulasi Data Koperasi
+
+I. TUJUAN PRAKTIKUM
+   1. Mahasiswa mampu menerapkan konsep basis data relasional pada studi kasus nyata Koperasi Mahasiswa (Kopma).
+   2. Mahasiswa mampu merancang tabel anggota, barang, dan transaksi pembelian/penjualan.
+   3. Mahasiswa mampu menerapkan integritas data menggunakan Foreign Key.
+
+II. DASAR TEORI
+    Sistem Koperasi Mahasiswa memerlukan pencatatan data yang akurat mencakup data anggota, 
+    katalog produk barang yang dijual, serta pencatatan transaksi harian. Relasi antar tabel 
+    dihubungkan melalui kunci tamu (Foreign Key) agar konsistensi data tetap terjaga.
+
+III. LANGKAH KERJA & IMPLEMENTASI SQL
+    A. Membuat Tabel Anggota Kopma:
+       CREATE TABLE anggota_kopma (
+           id_anggota VARCHAR(10) PRIMARY KEY,
+           nama_anggota VARCHAR(50) NOT NULL,
+           nomor_telepon VARCHAR(15)
+       );
+
+    B. Membuat Tabel Barang Kopma:
+       CREATE TABLE barang_kopma (
+           kode_barang VARCHAR(10) PRIMARY KEY,
+           nama_barang VARCHAR(50) NOT NULL,
+           harga_satuan INT,
+           stok INT
+       );
+
+    C. Membuat Tabel Transaksi Penjualan:
+       CREATE TABLE transaksi_kopma (
+           id_transaksi INT PRIMARY KEY,
+           id_anggota VARCHAR(10),
+           kode_barang VARCHAR(10),
+           jumlah_beli INT,
+           tanggal_transaksi DATE,
+           FOREIGN KEY (id_anggota) REFERENCES anggota_kopma(id_anggota),
+           FOREIGN KEY (kode_barang) REFERENCES barang_kopma(kode_barang)
+       );
+
+    D. Mengisi Data Sampel Transaksi Kopma:
+       INSERT INTO anggota_kopma VALUES ('A001', 'Adella Putri Yasminne', '081234567890');
+       INSERT INTO barang_kopma VALUES ('B001', 'Buku Tulis', 5000, 100);
+       INSERT INTO transaksi_kopma VALUES (1, 'A001', 'B001', 3, '2026-10-06');
+
+IV. ANALISIS & PEMBAHASAN
+    Penerapan Foreign Key constraint sangat krusial dalam sistem Kopma ini. Hal ini 
+    mencegah terjadinya transaksi oleh anggota atau barang yang tidak terdaftar di dalam database 
+    (mencegah data anomaly / orphan record).
+
+V. KESIMPULAN
+    Studi kasus Kopma memberikan pemahaman langsung mengenai bagaimana merancang database 
+    skala operasional nyata yang melibatkan relasi antar entitas bisnis.

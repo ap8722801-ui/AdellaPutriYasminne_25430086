@@ -1,0 +1,61 @@
+================================================================================
+NAMA       : Adella Putri Yasminne
+NPM        : 25430086
+KELAS      : C
+MATA KULIAH: Basis Data
+================================================================================
+
+                         LAPORAN PRAKTIKUM BASIS DATA
+                                   MODUL 1
+              Pengenalan Sistem Manajemen Basis Data & Perintah DDL
+
+I. TUJUAN PRAKTIKUM
+   1. Mahasiswa memahami konsep dasar Relational Database Management System (RDBMS).
+   2. Mahasiswa mampu mengoperasikan perangkat lunak database server (MariaDB/MySQL).
+   3. Mahasiswa mampu menulis dan mengeksekusi perintah Data Definition Language (DDL) 
+      seperti CREATE, SHOW, DESCRIBE, ALTER, dan DROP.
+
+II. DASAR TEORI
+    Basis data (database) adalah suatu sistem pengorganisasian dan penyimpanan data 
+    secara terstruktur di dalam komputer sehingga dapat diakses, dikelola, dan 
+    diperbarui dengan mudah. Dalam basis data relasional, data disimpan dalam bentuk 
+    tabel-tabel dua dimensi yang saling berelasi.
+    
+    Data Definition Language (DDL) adalah kelompok perintah SQL yang berfungsi untuk 
+    mendefinisikan kerangka atau struktur dari sebuah basis data, meliputi pembuatan 
+    database, pembuatan tabel, penambahan kolom, modifikasi struktur, hingga penghapusan struktur.
+
+III. LANGKAH KERJA & IMPLEMENTASI SQL
+    A. Membuka Command Line Client / Terminal dan Masuk ke Server Database:
+       mysql -u root -p
+
+    B. Membuat Database Baru:
+       CREATE DATABASE db_praktikum_086;
+       
+    C. Mengaktifkan Database yang Telah Dibuat:
+       USE db_praktikum_086;
+
+    D. Membuat Tabel Mahasiswa:
+       CREATE TABLE mahasiswa (
+           nim VARCHAR(10) NOT NULL PRIMARY KEY,
+           nama_lengkap VARCHAR(50) NOT NULL,
+           program_studi VARCHAR(30),
+           angkatan INT
+       );
+
+    E. Melihat Struktur Tabel yang Telah Dibuat:
+       DESCRIBE mahasiswa;
+
+    F. Melakukan Perubahan Struktur Tabel (ALTER TABLE):
+       ALTER TABLE mahasiswa ADD COLUMN alamat VARCHAR(100);
+
+IV. ANALISIS & PEMBAHASAN
+    Pada praktikum modul 1 ini, proses pembuatan struktur dasar berjalan lancar. Penggunaan 
+    tipe data seperti VARCHAR dan INT sangat menentukan besar alokasi memori penyimpanan. 
+    Penentuan PRIMARY KEY pada kolom NIM memastikan bahwa setiap baris data mahasiswa bersifat 
+    unik dan tidak ada duplikasi data (Entity Integrity).
+
+V. KESIMPULAN
+    Perintah DDL (Data Definition Language) sangat penting dalam tahap perancangan awal 
+    sebuah sistem basis data. Kesalahan dalam pendefinisian tipe data di awal dapat 
+    mempengaruhi performa integritas data pada modul-modul berikutnya.
